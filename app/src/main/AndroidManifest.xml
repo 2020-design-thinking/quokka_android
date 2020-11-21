@@ -10,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FinishDrivingActivity"></activity>
+        <activity android:name=".SuccessActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".FinishDrivingActivity" />
         <activity android:name=".StartDrivingActivity" />
         <activity android:name=".QrReaderActivity" />
         <activity android:name=".MyPageActivity" />

@@ -22,6 +22,13 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView gotoRegister = findViewById(R.id.goto_register);
         gotoRegister.setPaintFlags(gotoRegister.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        gotoRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Button loginButton = findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {

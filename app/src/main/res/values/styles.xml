@@ -13,10 +13,16 @@
             @transition/splash_login_transition</item>
         
         <item name="android:windowContentTransitions">true</item>
+
+        <item name="android:fontFamily">@font/asunflower</item>
     </style>
     
     <style name="RoundEditText">
-        
+        <item name="android:padding">15dp</item>
+        <item name="android:background">@drawable/bg_edit_text</item>
+        <item name="android:textColor">@color/colorForeground</item>
+        <item name="android:textColorHint">@color/colorBackgroundLight</item>
+        <item name="android:fontFamily">@font/asunflower</item>
     </style>
 
 </resources>

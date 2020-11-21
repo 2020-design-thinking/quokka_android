@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".RegisterActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="90dp">
+
+        <LinearLayout
+            android:id="@+id/login_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/logo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_margin="20dp"
+
+                android:text="회원가입"
+                android:fontFamily="@font/ablack_b"
+                android:textSize="40dp"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+
+                android:text="이름"
+                android:textSize="18dp"
+                android:textColor="@color/colorForeground" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+
+                style="@style/RoundEditText"
+                android:maxLines="1"
+                android:inputType="text"
+                android:hint="이름"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+
+                android:text="아이디"
+                android:textSize="18dp"
+                android:textColor="@color/colorForeground" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+
+                style="@style/RoundEditText"
+                android:maxLines="1"
+                android:inputType="text"
+                android:hint="아이디"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+
+                android:text="비밀번호"
+                android:textSize="18dp"
+                android:textColor="@color/colorForeground" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+
+                style="@style/RoundEditText"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:hint="비밀번호"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+
+                android:text="비밀번호 확인"
+                android:textSize="18dp"
+                android:textColor="@color/colorForeground" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+
+                style="@style/RoundEditText"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:hint="비밀번호 확인"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+
+                android:text="이메일"
+                android:textSize="18dp"
+                android:textColor="@color/colorForeground" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+
+                style="@style/RoundEditText"
+                android:maxLines="1"
+                android:inputType="textEmailAddress"
+                android:hint="이메일"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:text="가입하기"
+        android:textSize="20dp"
+        android:textColor="@color/colorBackground"
+        android:background="@drawable/rounded_button"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

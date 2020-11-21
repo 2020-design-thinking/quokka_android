@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/colorAccent"
     tools:context=".SplashActivity">
 
     <LinearLayout
@@ -16,6 +16,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="220dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/quokka_logo" />
+
         <TextView
             android:id="@+id/logo_name"
             android:layout_width="wrap_content"
@@ -24,8 +30,9 @@
 
             android:text="쿼카"
             android:textSize="90dp"
-            android:textColor="@color/colorForeground"
-            android:gravity="center" />
+            android:fontFamily="@font/ablack_b"
+            android:textColor="@color/colorBackground"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/logo_desc"
@@ -34,8 +41,9 @@
             android:layout_gravity="center_horizontal"
 
             android:text="당신의 동반자"
-            android:textSize="30dp"
-            android:textColor="@color/colorForeground"
+            android:textSize="28dp"
+            android:fontFamily="@font/ablack_b"
+            android:textColor="@color/colorBackground"
             android:gravity="center" />
 
     </LinearLayout>

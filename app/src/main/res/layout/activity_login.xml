@@ -9,9 +9,9 @@
 
     <LinearLayout
         android:id="@+id/login_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
+        android:layout_margin="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,12 +22,13 @@
             android:id="@+id/logo_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
             android:layout_margin="20dp"
 
             android:text="쿼카"
+            android:fontFamily="@font/ablack_b"
             android:textSize="50dp"
-            android:textColor="@color/colorForeground"
+            android:textColor="@color/colorAccent"
             android:gravity="center" />
 
         <EditText
@@ -35,64 +36,68 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:layout_margin="15dp"
-            android:padding="10dp"
+            android:padding="15dp"
 
-            android:background="@drawable/bg_edit_text"
+            style="@style/RoundEditText"
             android:maxLines="1"
             android:inputType="text"
-            android:hint="아이디"/>
+            android:hint="아이디" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:layout_margin="15dp"
-            android:padding="10dp"
+            android:padding="15dp"
 
-            android:background="@drawable/bg_edit_text"
+            style="@style/RoundEditText"
             android:maxLines="1"
             android:inputType="textPassword"
-            android:hint="비밀번호"/>
+            android:hint="비밀번호" />
 
         <Button
             android:id="@+id/login"
 
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
             android:layout_gravity="center_horizontal"
+            android:layout_margin="15dp"
 
             android:background="@drawable/rounded_button"
             android:text="로그인"
+            android:textStyle="bold"
+            android:textColor="@color/colorBackground"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/not_member_yet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/login_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="20dp"
+            android:layout_gravity="center_horizontal"
+
+            android:text="아직 회원이 아니신가요?"
+            android:textColor="@color/colorForeground"
             android:textSize="20dp"/>
 
+        <TextView
+            android:id="@+id/goto_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/not_member_yet"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="20dp"
+            android:layout_gravity="center_horizontal"
+
+            android:text="지금 가입하기"
+            android:textSize="20dp"
+            android:textColor="@color/colorAccent"/>
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/not_member_yet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/login_layout"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="20dp"
-
-        android:text="아직 회원이 아니신가요?"
-        android:textColor="@color/colorForeground"
-        android:textSize="20dp"/>
-
-    <TextView
-        android:id="@+id/goto_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/not_member_yet"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="20dp"
-
-        android:text="지금 가입하기"
-        android:textSize="20dp"
-        android:textColor="@color/colorPrimary"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
