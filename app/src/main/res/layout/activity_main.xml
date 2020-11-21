@@ -31,7 +31,7 @@
             android:background="@drawable/button_circle"
             android:text="QR\n스캔"
             android:textSize="24dp"
-            android:textColor="@color/colorEdge" />
+            android:textColor="@color/colorForeground"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -46,16 +46,14 @@
                 android:layout_height="60dp"
                 android:layout_marginRight="60dp"
 
-                android:background="@drawable/button_circle"
-                android:textColor="@color/colorEdge" />
+                android:background="@drawable/bg_button_menu" />
 
             <Button
                 android:id="@+id/quokka"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
 
-                android:background="@drawable/button_circle"
-                android:textColor="@color/colorEdge" />
+                android:background="@drawable/button_circle" />
 
         </LinearLayout>
 
