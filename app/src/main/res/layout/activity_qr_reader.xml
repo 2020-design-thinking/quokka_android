@@ -6,4 +6,59 @@
     android:layout_height="match_parent"
     tools:context=".QrReaderActivity">
 
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/zxing_barcode_scanner"
+        app:zxing_use_texture_view="false"
+        app:zxing_preview_scaling_strategy="fitXY"
+        app:zxing_framing_rect_width="200dp"
+        app:zxing_framing_rect_height="200dp" />
+
+    <ImageView
+        android:id="@+id/qr_border"
+        android:layout_width="203dp"
+        android:layout_height="203dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/square_border" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/qr_border"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="20dp"
+
+        android:text="QR코드를\n스캔하세요"
+        android:textColor="@color/colorBackground"
+        android:textSize="30dp"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/number_input_btn"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toBottomOf="@id/qr_border"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="30dp"
+
+        style="@style/RoundButton"
+        android:text="번호 직접 입력" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toBottomOf="@id/number_input_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"
+
+        style="@style/RoundButton"
+        android:text="라이트 켜기" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

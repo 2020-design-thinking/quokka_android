@@ -3,9 +3,8 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="5dp"/>
-            <solid android:color="#51585E"/>
-
-            <stroke android:color="@color/colorFail" android:width="3dp"/>
+            <solid android:color="@color/colorBackgroundDark"/>
+            <stroke android:color="@color/colorFail" android:width="2dp"/>
         </shape>
     </item>
 </layer-list>

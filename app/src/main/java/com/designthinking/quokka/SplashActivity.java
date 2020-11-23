@@ -29,6 +29,6 @@ public class SplashActivity extends AppCompatActivity {
                         makeSceneTransitionAnimation(SplashActivity.this, logoName, "logo_name");
                 startActivity(intent, options.toBundle());
             }
-        }, 2000);
+        }, 0);
     }
 }

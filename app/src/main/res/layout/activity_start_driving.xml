@@ -17,6 +17,7 @@
         app:layout_constraintRight_toRightOf="parent" >
 
         <TextView
+            android:id="@+id/device_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -42,25 +43,23 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
+            android:id="@+id/negative"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
 
-            android:text="아니요"
-            android:textSize="20dp"
-            android:textColor="@color/colorForeground"
-            android:background="@drawable/rounded_button_negative" />
+            style="@style/RoundButtonNegative"
+            android:text="아니요" />
 
         <Button
+            android:id="@+id/positive"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
 
-            android:text="네!"
-            android:textSize="20dp"
-            android:textColor="@color/colorForeground"
-            android:background="@drawable/rounded_button"/>
+            style="@style/RoundButton"
+            android:text="네!" />
 
     </LinearLayout>
 

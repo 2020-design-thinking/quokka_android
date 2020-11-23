@@ -171,9 +171,7 @@
         android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
 
-        android:text="가입하기"
-        android:textSize="20dp"
-        android:textColor="@color/colorBackground"
-        android:background="@drawable/rounded_button"/>
+        style="@style/RoundButton"
+        android:text="가입하기" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

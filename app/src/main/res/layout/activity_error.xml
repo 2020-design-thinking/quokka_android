@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context=".SuccessActivity">
+    tools:context=".ErrorActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -20,7 +19,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
-            app:lottie_rawRes="@raw/check_animation"
+            app:lottie_rawRes="@raw/error_animation"
             app:lottie_autoPlay="true"/>
 
         <TextView
@@ -30,10 +29,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
 
-            android:text="가입 성공!"
+            android:text="오류 발생!"
             android:textColor="@color/colorForeground"
             android:textSize="50dp" />
-        
+
         <TextView
             android:id="@+id/desc"
             android:layout_width="wrap_content"
@@ -41,7 +40,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
 
-            android:text="이제 등록한 아이디로 로그인 할 수 있어요"
+            android:text="권한이 존재하지 않습니다"
             android:textColor="@color/colorForeground"
             android:textSize="20dp" />
 
