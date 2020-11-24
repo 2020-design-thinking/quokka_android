@@ -45,13 +45,13 @@
                 android:textSize="18dp"
                 android:textColor="@color/colorForeground" />
 
-            <EditText
+            <com.designthinking.quokka.view.VEditText
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="25dp"
                 android:layout_marginTop="5dp"
                 android:padding="10dp"
 
@@ -65,18 +65,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
 
                 android:text="아이디"
                 android:textSize="18dp"
                 android:textColor="@color/colorForeground" />
 
-            <EditText
+            <com.designthinking.quokka.view.VEditText
+                android:id="@+id/id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="25dp"
                 android:layout_marginTop="5dp"
                 android:padding="10dp"
 
@@ -90,18 +91,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
 
                 android:text="비밀번호"
                 android:textSize="18dp"
                 android:textColor="@color/colorForeground" />
 
-            <EditText
+            <com.designthinking.quokka.view.VEditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="25dp"
                 android:layout_marginTop="5dp"
                 android:padding="10dp"
 
@@ -115,18 +117,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
 
                 android:text="비밀번호 확인"
                 android:textSize="18dp"
                 android:textColor="@color/colorForeground" />
 
-            <EditText
+            <com.designthinking.quokka.view.VEditText
+                android:id="@+id/password_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="25dp"
                 android:layout_marginTop="5dp"
                 android:padding="10dp"
 
@@ -140,18 +143,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
 
                 android:text="이메일"
                 android:textSize="18dp"
                 android:textColor="@color/colorForeground" />
 
-            <EditText
+            <com.designthinking.quokka.view.VEditText
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="25dp"
                 android:layout_marginTop="5dp"
                 android:padding="10dp"
 

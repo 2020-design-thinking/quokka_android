@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -51,25 +52,6 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/safety_layout">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal"
-
-            android:text="안전 점수"
-            android:textColor="@color/colorForeground"
-            android:textSize="40dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-
-            android:text="훌륭해요!"
-            android:textColor="@color/colorForeground"
-            android:textSize="20dp" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,10 +64,10 @@
                 android:layout_alignParentLeft="true"
 
                 android:text="주행 거리"
-                android:textColor="@color/colorForeground"
                 android:textSize="30dp" />
 
             <TextView
+                android:id="@+id/dist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -99,49 +81,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-
-                android:text="요금"
-                android:textColor="@color/colorForeground"
-                android:textSize="30dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-
-                android:text="1000원"
-                android:textColor="@color/colorForeground"
-                android:textSize="30dp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-
-                android:text="할인된 요금"
-                android:textColor="@color/colorForeground"
-                android:textSize="30dp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:padding="10dp" >
 
@@ -151,10 +91,10 @@
                 android:layout_alignParentLeft="true"
 
                 android:text="운전 점수"
-                android:textColor="@color/colorForeground"
                 android:textSize="30dp" />
 
             <RatingBar
+                android:id="@+id/rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -163,10 +103,98 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+
+                android:text="요금"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/driving_charge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+
+                android:text="1000원"
+                android:textColor="@color/colorForeground"
+                android:textSize="24dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+
+                android:text="할인"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/discounted_charge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+
+                android:text="-100원"
+                android:textColor="@color/colorSuccess"
+                android:textSize="24dp" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#c0c0c0"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+
+                android:text="최종 요금"
+                android:textSize="30dp" />
+
+            <TextView
+                android:id="@+id/charge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+
+                android:text="900원"
+                android:textColor="@color/colorForeground"
+                android:textSize="30dp" />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
     <Button
-        android:id="@+id/stop_driving"
+        android:id="@+id/payment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

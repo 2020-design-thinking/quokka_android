@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,16 +21,24 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.designthinking.quokka.api.Device;
+import com.designthinking.quokka.api.Drive;
+import com.designthinking.quokka.camera.CameraPreview;
+import com.designthinking.quokka.camera.IImageListener;
+import com.designthinking.quokka.camera.ImageProvider;
+import com.designthinking.quokka.camera.VideoPreview;
 import com.designthinking.quokka.drive.DrivingManager;
 import com.designthinking.quokka.drive.IFinishDrivingListener;
 import com.designthinking.quokka.location.FakeLocationProvider;
 import com.designthinking.quokka.location.ILocationListener;
+import com.designthinking.quokka.location.ILocationProvider;
 import com.designthinking.quokka.location.LocationProvider;
 import com.designthinking.quokka.retrofit.IResult;
 import com.designthinking.quokka.retrofit.Result;
@@ -42,6 +53,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -51,9 +63,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.File;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, ILocationListener, IFinishDrivingListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, LocationSource.OnLocationChangedListener, IFinishDrivingListener, IImageListener {
 
     private static final int REQUEST_START_DRIVING = 101;
 
@@ -80,7 +93,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrivingView drivingView;
     private DrivingManager drivingManager;
 
-    private LocationProvider locationProvider;
+    private ILocationProvider locationProvider;
+
+    private ImageProvider imageProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,10 +159,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         drivingManager = new DrivingManager(client.getApi());
         drivingView = new DrivingView(this, rootLayout, drivingManager, this);
 
-        requestLocationPermission();
-
-        locationProvider = new FakeLocationProvider(37.249893, 127.139157, 0.0005, 0.0005, handler);
-        locationProvider.setListener(this);
+        locationProvider = new FakeLocationProvider(37.247630, 127.078420, 0.0005, 0.0005, handler);
+        locationProvider.activate(MainActivity.this);
     }
 
     public void updateMarkers(){
@@ -171,12 +184,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
         else{
-            updateLocation();
+            map.setLocationSource(locationProvider);
+            map.setMyLocationEnabled(true);
         }
-    }
-
-    private void updateLocation(){
-
     }
 
     private Device getDevice(int pk){
@@ -191,6 +201,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(("" + device.getId()).equals(pk)) return device;
         }
         return null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(map != null && lastLocation != null){
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 16f));
+        }
     }
 
     @Override
@@ -212,6 +231,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             }
         });
+
+        requestLocationPermission();
     }
 
     @Override
@@ -260,6 +281,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         defaultLayout.setVisibility(View.GONE);
 
                         locationProvider.start();
+
+                        imageProvider = new VideoPreview(MainActivity.this, handler);
+                        imageProvider.setListener(MainActivity.this);
+
+                        rootLayout.addView(imageProvider);
+                    }
+                    else{
+                        Intent intent = new Intent(MainActivity.this, ErrorActivity.class);
+                        intent.putExtra("title", "이미 사용중!");
+                        intent.putExtra("desc", "해당 쿼카는 이미 사용중입니다");
+                        intent.putExtra("activity", "com.designthinking.quokka.MainActivity");
+                        startActivity(intent);
                     }
                 }
             });
@@ -275,15 +308,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 else{
                     locationPermissionGranted = true;
-                    updateLocation();
                 }
             }
         }
     }
 
     @Override
-    public void updateLocation(Location location) {
+    public void onLocationChanged(Location location) {
         lastLocation = location;
+        lastLocation.setSpeed(drivingView.getSpeed());
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(lastLocation.getLatitude(),
                         lastLocation.getLongitude()), 16f));
@@ -296,8 +329,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onFinishDriving() {
+    public void onFinishDriving(Drive drive) {
         defaultLayout.setVisibility(View.VISIBLE);
-        locationProvider.pause();
+        locationProvider.deactivate();
+
+        imageProvider.stop();
+        rootLayout.removeView(imageProvider);
+
+        Intent intent = new Intent(this, FinishDrivingActivity.class);
+        intent.putExtra("dist", drive.dist);
+        intent.putExtra("driving_charge", drive.driving_charge);
+        intent.putExtra("discounted_charge", drive.discounted_charge);
+        intent.putExtra("charge", drive.charge);
+        intent.putExtra("rating", drive.safety_rate);
+        startActivity(intent);
+    }
+
+    @Override
+    public void updateImageFile(File file) {
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
+        client.getApi().postImage(body).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
     }
 }

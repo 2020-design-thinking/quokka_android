@@ -3,6 +3,7 @@ package com.designthinking.quokka.api;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -24,6 +25,12 @@ public interface IApiServer {
     @POST("users/login")
     Call<TokenResponse> login(@Field("username") String username, @Field("password") String password);
 
+    @FormUrlEncoded
+    @POST("users/register")
+    Call<Void> register(@Field("username") String username, @Field("email") String email,
+                        @Field("password") String password, @Field("first_name") String first_name,
+                        @Field("last_name") String last_name, @Field("birth") String birth);
+
     @GET("devices/")
     Call<List<Device>> deviceList();
 
@@ -43,5 +50,9 @@ public interface IApiServer {
 
     @GET("/drive/{id}")
     Call<Drive> getDriveStatus(@Path(value = "id", encoded = true) int id);
+
+    @Multipart
+    @POST("/judge/image")
+    Call<Void> postImage(@Part MultipartBody.Part image);
 
 }

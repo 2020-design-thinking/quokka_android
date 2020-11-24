@@ -8,4 +8,5 @@
     <color name="colorBackgroundDark">#eaeaea</color>
     <color name="colorForeground">#2A2E30</color>
     <color name="colorFail">#F64D3E</color>
+    <color name="colorSuccess">#50C852</color>
 </resources>

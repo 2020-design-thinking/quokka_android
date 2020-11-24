@@ -8,8 +8,9 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.LocationSource;
 
-public class RealLocationProvider extends LocationProvider {
+public class RealLocationProvider implements ILocationProvider {
 
     public RealLocationProvider(Context context){
         FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(context);
@@ -22,7 +23,9 @@ public class RealLocationProvider extends LocationProvider {
                     if (locationResult == null || locationResult.getLastLocation() == null) {
                         return;
                     }
-                    getListener().updateLocation(locationResult.getLastLocation());
+                    for(OnLocationChangedListener listener : listeners){
+                        listener.onLocationChanged(locationResult.getLastLocation());
+                    }
                 }
             }, Looper.getMainLooper());
         }
@@ -32,12 +35,23 @@ public class RealLocationProvider extends LocationProvider {
     }
 
     @Override
-    public void pause() {
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
+        registerListener(onLocationChangedListener);
+    }
+
+    @Override
+    public void registerListener(OnLocationChangedListener onLocationChangedListener){
+        listeners.remove(onLocationChangedListener);
+        listeners.add(onLocationChangedListener);
+    }
+
+    @Override
+    public void deactivate() {
 
     }
 
     @Override
-    public void start(){
+    public void start() {
 
     }
 }

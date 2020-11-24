@@ -3,10 +3,12 @@ package com.designthinking.quokka.location;
 import android.location.Location;
 import android.os.Handler;
 
-public class FakeLocationProvider extends LocationProvider {
+import com.google.android.gms.maps.LocationSource;
+
+public class FakeLocationProvider implements ILocationProvider {
 
     public double[] values;
-    private boolean stop;
+    private boolean running;
 
     private Handler handler;
     private Runnable runnable;
@@ -20,26 +22,43 @@ public class FakeLocationProvider extends LocationProvider {
                 Location location = new Location("");
                 location.setLatitude(values[0]);
                 location.setLongitude(values[1]);
-                getListener().updateLocation(location);
+                for(OnLocationChangedListener listener : listeners){
+                    listener.onLocationChanged(location);
+                }
                 move();
-
-                if(!stop) handler.postDelayed(this, 1000);
+                if(running) handler.postDelayed(this, 1000);
             }
         };
 
         this.handler = handler;
     }
 
-    public void pause(){
-        stop = true;
-    }
-
-    public void start(){
-        handler.postDelayed(runnable, 1000);
-    }
-
     private void move(){
         values[0] += values[2];
         values[1] += values[3];
+    }
+
+    @Override
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
+        registerListener(onLocationChangedListener);
+        // Init Start Position
+        handler.post(runnable);
+    }
+
+    @Override
+    public void registerListener(OnLocationChangedListener onLocationChangedListener){
+        listeners.remove(onLocationChangedListener);
+        listeners.add(onLocationChangedListener);
+    }
+
+    @Override
+    public void deactivate() {
+        running = false;
+    }
+
+    @Override
+    public void start() {
+        running = true;
+        handler.post(runnable);
     }
 }

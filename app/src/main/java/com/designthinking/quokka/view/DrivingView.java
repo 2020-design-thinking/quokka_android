@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.designthinking.quokka.FinishDrivingActivity;
@@ -25,6 +26,10 @@ public class DrivingView {
 
     private TextView chargeText;
 
+    // DEV
+    private SeekBar speedBar;
+    private TextView speedText;
+
     public DrivingView(Context context, ViewGroup container, DrivingManager manager, IFinishDrivingListener listener){
         this.manager = manager;
 
@@ -40,16 +45,33 @@ public class DrivingView {
                         @Override
                         public void result(Result result, Drive drive) {
                             if(result == Result.SUCCESS){
-                                listener.onFinishDriving();
-
-                                Intent intent = new Intent(context, FinishDrivingActivity.class);
-                                context.startActivity(intent);
-
+                                listener.onFinishDriving(drive);
                                 view.setVisibility(View.GONE);
                             }
                         }
                     });
                 }
+            }
+        });
+
+        // DEV
+        speedBar = view.findViewById(R.id.speed);
+        speedText = view.findViewById(R.id.speed_text);
+        speedBar.setMax(25);
+        speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                speedText.setText(progress + "km");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
@@ -73,6 +95,10 @@ public class DrivingView {
         if(manager != null && manager.isDriving()){
             chargeText.setText(manager.getDrive().charge + "원");
         }
+    }
+
+    public int getSpeed(){
+        return speedBar.getProgress();
     }
 
 }

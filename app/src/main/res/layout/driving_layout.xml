@@ -13,6 +13,41 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="7dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+
+                android:text="속도*"
+                android:textSize="20dp"
+                android:textColor="@color/colorForeground" />
+
+            <SeekBar
+                android:id="@+id/speed"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="70dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/speed_text"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+
+                android:text="0km"
+                android:textSize="20dp"
+                android:textColor="@color/colorForeground" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp">
 
             <TextView
