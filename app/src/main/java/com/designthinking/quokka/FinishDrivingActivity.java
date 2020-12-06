@@ -17,8 +17,8 @@ public class FinishDrivingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_finish_driving);
 
         TextView distText = findViewById(R.id.dist);
-        TextView drivingChargeText = findViewById(R.id.driving_charge);
-        TextView discountedChargeText = findViewById(R.id.discounted_charge);
+        TextView drivingChargeText = findViewById(R.id.charge_origin);
+        TextView discountedChargeText = findViewById(R.id.charge_discount);
         TextView chargeText = findViewById(R.id.charge);
         RatingBar ratingBar = findViewById(R.id.rating);
         Button paymentBtn = findViewById(R.id.payment);

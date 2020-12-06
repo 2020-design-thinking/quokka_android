@@ -29,180 +29,121 @@
 
     </LinearLayout>-->
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="15dp"
-            android:elevation="5dp"
-            android:orientation="vertical"
-
-            android:background="@drawable/bg_floating_rounded">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-
-                android:text="거리"
-                android:textColor="@color/colorForeground"
-                android:textSize="25dp" />
-
-            <fragment
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/map"
-                tools:context=".MainActivity"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_gravity="center_horizontal"/>
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="15dp"
-                android:orientation="vertical">
+                android:elevation="5dp"
+                android:orientation="vertical"
+
+                android:background="@drawable/bg_floating_rounded">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+
+                    android:text="거리"
+                    android:textColor="@color/colorForeground"
+                    android:textSize="25dp" />
+
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/map"
+                    tools:context=".MainActivity"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_gravity="center_horizontal"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp"
-                    android:orientation="horizontal">
+                    android:layout_margin="15dp"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="사용 시간"
-                        android:textColor="@color/colorBackgroundDark3"
-                        android:textSize="24dp"/>
-
-                    <TextView
-                        android:id="@+id/time"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right"
+                        android:layout_margin="3dp"
+                        android:orientation="horizontal">
 
-                        android:text="25분"
-                        android:textColor="@color/colorForeground"
-                        android:textSize="24dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
 
-                </LinearLayout>
+                            android:text="사용 시간"
+                            android:textColor="@color/colorBackgroundDark3"
+                            android:textSize="18dp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp"
-                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                            android:text="25분"
+                            android:textColor="@color/colorForeground"
+                            android:textSize="24dp"/>
 
-                        android:text="사용 거리"
-                        android:textColor="@color/colorBackgroundDark3"
-                        android:textSize="24dp"/>
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/dist"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right"
+                        android:layout_margin="3dp"
+                        android:orientation="horizontal">
 
-                        android:text="16km"
-                        android:textColor="@color/colorForeground"
-                        android:textSize="24dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+
+                            android:text="사용 거리"
+                            android:textColor="@color/colorBackgroundDark3"
+                            android:textSize="18dp"/>
+
+                        <TextView
+                            android:id="@+id/dist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+
+                            android:text="16km"
+                            android:textColor="@color/colorForeground"
+                            android:textSize="24dp"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/bg_floating_rounded"
-            android:elevation="5dp"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_margin="15dp"
-
-                android:text="안전"
-                android:textColor="@color/colorForeground"
-                android:textSize="25dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-
-                android:text="4.3/5"
-                android:textSize="50dp"
-                android:textColor="@color/colorForeground"
-
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/bg_floating_rounded"
-            android:elevation="5dp"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-
-                android:text="요금"
-                android:textColor="@color/colorForeground"
-                android:textSize="25dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -210,126 +151,197 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
-                android:orientation="vertical">
+                android:background="@drawable/bg_floating_rounded"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="15dp"
+
+                    android:text="안전"
+                    android:textColor="@color/colorForeground"
+                    android:textSize="25dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+
+                    android:text="4.3/5"
+                    android:textSize="50dp"
+                    android:textColor="@color/colorForeground"/>
+
+                <RatingBar
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/bg_floating_rounded"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+
+                    android:text="요금"
+                    android:textColor="@color/colorForeground"
+                    android:textSize="25dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginRight="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:orientation="horizontal">
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="사용 요금"
-                        android:textColor="@color/colorBackgroundDark3"
-                        android:textSize="24dp"/>
-
-                    <TextView
-                        android:id="@+id/charge_origin"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:orientation="horizontal">
 
-                        android:text="1234원"
-                        android:textColor="@color/colorForeground"
-                        android:textSize="24dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
 
-                </LinearLayout>
+                            android:text="사용 요금"
+                            android:textColor="@color/colorBackgroundDark3"
+                            android:textSize="18dp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp"
-                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/charge_origin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                            android:text="1234원"
+                            android:textColor="@color/colorForeground"
+                            android:textSize="24dp"/>
 
-                        android:text="충전"
-                        android:textColor="@color/colorBackgroundDark3"
-                        android:textSize="24dp"/>
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/total_discount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right"
-
-                        android:text="-120원"
-                        android:textColor="@color/colorSuccess"
-                        android:textSize="24dp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="안전 평점"
-                        android:textColor="@color/colorBackgroundDark3"
-                        android:textSize="24dp"/>
-
-                    <TextView
-                        android:id="@+id/total_discount"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right"
+                        android:layout_margin="3dp"
+                        android:orientation="horizontal">
 
-                        android:text="-10%"
-                        android:textColor="@color/colorSuccess"
-                        android:textSize="24dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
 
-                </LinearLayout>
+                            android:text="충전"
+                            android:textColor="@color/colorBackgroundDark3"
+                            android:textSize="18dp"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/colorBackgroundDark3"
-                    android:layout_margin="3dp"/>
+                        <TextView
+                            android:id="@+id/charge_discount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
+                            android:text="-120원"
+                            android:textColor="@color/colorSuccess"
+                            android:textSize="24dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                    </LinearLayout>
 
-                        android:text="최종 요금 "
-                        android:textColor="@color/colorBackgroundDark3"
-                        android:textSize="18dp"/>
-
-                    <TextView
-                        android:id="@+id/total_discount"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right"
+                        android:layout_margin="3dp"
+                        android:orientation="horizontal">
 
-                        android:text="1000원"
-                        android:textColor="@color/colorForeground"
-                        android:textSize="36dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="안전 평점"
+                            android:textColor="@color/colorBackgroundDark3"
+                            android:textSize="18dp"/>
+
+                        <TextView
+                            android:id="@+id/safety_discount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+
+                            android:text="-10%"
+                            android:textColor="@color/colorSuccess"
+                            android:textSize="24dp"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/colorBackgroundDark3"
+                        android:layout_margin="4dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+
+                            android:text="최종 요금 "
+                            android:textColor="@color/colorBackgroundDark3"
+                            android:textSize="24dp"/>
+
+                        <TextView
+                            android:id="@+id/charge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+
+                            android:text="1000원"
+                            android:textColor="@color/colorForeground"
+                            android:textSize="36dp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -337,7 +349,8 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+
+    </ScrollView>
 
     <!--<LinearLayout
         android:id="@+id/charge_layout"
