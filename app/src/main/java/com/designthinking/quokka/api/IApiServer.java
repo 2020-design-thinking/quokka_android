@@ -34,6 +34,12 @@ public interface IApiServer {
     @GET("devices/")
     Call<List<Device>> deviceList();
 
+    @POST("devices/{id}/reserve")
+    Call<MessageResponse> reserve(@Path(value = "id", encoded = true) int id);
+
+    @POST("users/cancel_reserve")
+    Call<MessageResponse> cancelReserve();
+
     @POST("devices/{id}/drive")
     Call<Drive> startDriving(@Path(value = "id", encoded = true) int id);
 

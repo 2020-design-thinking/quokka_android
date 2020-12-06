@@ -1,6 +1,8 @@
 package com.designthinking.quokka.api;
 
+import com.designthinking.quokka.core.Policy;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 public class Device {
 
@@ -10,12 +12,19 @@ public class Device {
 
     public double lat;
     public double lng;
-    public LatLng location;
     public float battery;
     public boolean using;
+    public boolean reserved;
+
+    public Marker marker;
 
     public LatLng getLocation(){
         return new LatLng(lat, lng);
+    }
+
+    public void setLocation(LatLng latLng){
+        lat = latLng.latitude;
+        lng = latLng.longitude;
     }
 
     public String getName(){
@@ -27,7 +36,25 @@ public class Device {
     }
 
     public boolean isAvailable(){
-        return !using;
+        return !using && !reserved;
+    }
+
+    public boolean isLowBattery(){
+        return Policy.isLowBattery(this);
+    }
+
+    public int getIntBattery(){
+        return (int)(battery * 100);
+    }
+
+    public void set(Device device){
+        pk = device.pk;
+        lat = device.lat;
+        lng = device.lng;
+        battery = device.battery;
+        using = device.using;
+        reserved = device.reserved;
+        // Marker is not updated
     }
 
 }

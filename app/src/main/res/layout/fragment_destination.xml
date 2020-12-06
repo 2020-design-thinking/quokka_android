@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DestinationFragment"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <com.designthinking.quokka.view.MyAutoCompleteTextView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        android:elevation="5dp"
+
+        android:hint="목적지를 입력하세요"
+        android:background="@drawable/bg_floating_rounded"
+        android:textColor="@color/colorForeground"
+        android:textSize="25dp"
+        android:singleLine="true"/>
+
+    <!--<EditText
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        android:elevation="5dp"
+
+        android:text="경희대학교 국제캠퍼스"
+        android:hint="목적지를 입력하세요"
+        android:background="@drawable/bg_floating_rounded"
+        android:textColor="@color/colorForeground"
+        android:textSize="25dp" />-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:clipToPadding="false">
+
+        <ToggleButton
+            android:id="@+id/fastest"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginRight="15dp"
+
+            android:textOn="가장 빠른"
+            android:textOff="가장 빠른"
+            android:background="@drawable/btn_toggle_bg"
+            android:textColor="@drawable/btn_toggle_text"/>
+
+        <ToggleButton
+            android:id="@+id/cheapest"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+
+            android:textOn="가장 싼"
+            android:textOff="가장 싼"
+            android:background="@drawable/btn_toggle_bg"
+            android:textColor="@drawable/btn_toggle_text"/>
+        
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

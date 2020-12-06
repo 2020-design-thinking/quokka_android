@@ -14,6 +14,27 @@
         tools:context=".MainActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
+    <fragment
+        android:id="@+id/destination_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:name="com.designthinking.quokka.DestinationFragment" />
+
+    <fragment
+        android:id="@+id/quokka_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:name="com.designthinking.quokka.QuokkaFragment" />
+
+    <fragment
+        android:id="@+id/driving_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:name="com.designthinking.quokka.DrivingFragment" />
+
     <RelativeLayout
         android:id="@+id/default_layout"
         android:layout_width="match_parent"
@@ -22,7 +43,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
+        <!--<Button
             android:id="@+id/qr_scan"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -60,7 +81,7 @@
 
                 android:background="@drawable/button_circle" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
     </RelativeLayout>
 

@@ -3,62 +3,69 @@ package com.designthinking.quokka.location;
 import android.location.Location;
 import android.os.Handler;
 
-import com.google.android.gms.maps.LocationSource;
+import com.designthinking.quokka.event.EventManager;
+import com.designthinking.quokka.event.messages.OnLocationUpdate;
+import com.designthinking.quokka.util.LocationUtil;
+import com.google.android.gms.maps.model.LatLng;
 
-public class FakeLocationProvider implements ILocationProvider {
+public class FakeLocationProvider extends LocationProvider {
 
-    public double[] values;
-    private boolean running;
+    private static final int UPDATE_PERIOD = 1000;
+
+    private LatLng current;
 
     private Handler handler;
-    private Runnable runnable;
+    private Runnable locationUpdate;
 
-    public FakeLocationProvider(double lat, double lng, double dlat, double dlng, Handler handler){
-        values = new double[]{lat, lng, dlat, dlng};
+    private LatLng targetLatLng;
+    private double speed; // m/s
 
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                Location location = new Location("");
-                location.setLatitude(values[0]);
-                location.setLongitude(values[1]);
-                for(OnLocationChangedListener listener : listeners){
-                    listener.onLocationChanged(location);
-                }
-                move();
-                if(running) handler.postDelayed(this, 1000);
-            }
-        };
+    public FakeLocationProvider(LatLng init, Handler handler){
+        current = init;
 
         this.handler = handler;
+
+        locationUpdate = () -> {
+            Location location = new Location("");
+            location.setLatitude(current.latitude);
+            location.setLongitude(current.longitude);
+
+            setLocation(location);
+
+            move();
+
+            handler.postDelayed(locationUpdate, UPDATE_PERIOD);
+        };
+
+        handler.post(locationUpdate);
     }
 
     private void move(){
-        values[0] += values[2];
-        values[1] += values[3];
+        if(targetLatLng == null) return;
+
+        // Binary search to calculate next position with given speed
+        double step = speed * UPDATE_PERIOD / 1000.0;
+        double lo = 0, hi = 1;
+        for(int i = 0; i < 30; i++){
+            double mid = (lo + hi) / 2;
+            double dist = LocationUtil.calcFastDist(current,
+                    LocationUtil.lerp(current, targetLatLng, mid));
+            if(dist <= step)
+                lo = mid;
+            else
+                hi = mid;
+        }
+
+        current = LocationUtil.lerp(current, targetLatLng, lo);
     }
 
     @Override
-    public void activate(OnLocationChangedListener onLocationChangedListener) {
-        registerListener(onLocationChangedListener);
-        // Init Start Position
-        handler.post(runnable);
+    public void setTargetLatLng(LatLng latLng){
+        targetLatLng = latLng;
     }
 
     @Override
-    public void registerListener(OnLocationChangedListener onLocationChangedListener){
-        listeners.remove(onLocationChangedListener);
-        listeners.add(onLocationChangedListener);
-    }
-
-    @Override
-    public void deactivate() {
-        running = false;
-    }
-
-    @Override
-    public void start() {
-        running = true;
-        handler.post(runnable);
+    public void setSpeed(double speed){
+        this.speed = speed;
     }
 }

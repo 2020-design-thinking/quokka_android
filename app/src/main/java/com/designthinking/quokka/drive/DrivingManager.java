@@ -51,45 +51,7 @@ public class DrivingManager {
     }
 
     public void updateLocation(Location location){
-        if(drive == null) return;
 
-        api.updateDevice(device.pk, location.getLatitude(), location.getLongitude()).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-
-            }
-        });
-
-        api.updateDrive(drive.pk, location.getLatitude(), location.getLongitude(), (int)location.getSpeed()).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-
-            }
-        });
-
-        api.getDriveStatus(drive.pk).enqueue(new Callback<Drive>() {
-            @Override
-            public void onResponse(Call<Drive> call, Response<Drive> response) {
-                if(response.code() == 200){
-                    if(drive != null) drive.charge = response.body().charge;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Drive> call, Throwable t) {
-
-            }
-        });
     }
 
     public void finishDriving(IDrivingResult callback){

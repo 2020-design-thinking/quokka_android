@@ -19,16 +19,31 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/logo_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="10dp"
+
+            android:text="행복한 킥보드"
+            android:fontFamily="@font/nanum_barun_gothic_b"
+            android:textSize="24dp"
+            android:textColor="@color/colorForegroundLight"
+            android:gravity="center" />
+
+        <TextView
             android:id="@+id/logo_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_margin="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"
 
-            android:text="쿼카"
-            android:fontFamily="@font/ablack_b"
+            android:text="쿼카입니다"
+            android:fontFamily="@font/nanum_barun_gothic_b"
             android:textSize="50dp"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorForeground"
             android:gravity="center" />
 
         <TextView
@@ -66,12 +81,12 @@
         <Button
             android:id="@+id/login"
 
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="15dp"
 
-            style="@style/RoundButton"
+            style="@style/MoreRoundButton"
             android:text="로그인" />
 
         <TextView
@@ -95,7 +110,7 @@
             app:layout_constraintTop_toBottomOf="@id/not_member_yet"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:layout_gravity="center_horizontal"
 
             android:text="지금 가입하기"
