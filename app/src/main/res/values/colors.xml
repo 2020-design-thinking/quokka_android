@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF0000</color>
+    <color name="colorPrimary">#19D3DA</color>
     <color name="colorPrimaryDark">#292e2e</color>
 <!--    <color name="colorAccent">#00897B</color>-->
     <color name="colorAccent">#19D3DA</color>
@@ -14,4 +14,7 @@
     <color name="colorForegroundLight">#4a5355</color>
     <color name="colorFail">#F64D3E</color>
     <color name="colorSuccess">#50C852</color>
+    <color name="colorWarn">#80FFB300</color>
+    <color name="colorWarnFill">#35FFB300</color>
+    <color name="colorStation">#6DCF5A</color>
 </resources>

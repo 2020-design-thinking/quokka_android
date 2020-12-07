@@ -205,7 +205,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_margin="15dp"/>
+                    android:layout_margin="15dp"
+                    android:isIndicator="true"/>
+
+                <com.github.mikephil.charting.charts.RadarChart
+                    android:id="@+id/safety_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="30dp"/>
+
 
             </LinearLayout>
 
@@ -527,14 +535,23 @@
 
     </LinearLayout>-->
 
-    <Button
-        android:id="@+id/payment"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/bg_alpha_gradient">
 
-        style="@style/RoundButton"
-        android:text="결제하기" />
+        <Button
+            android:id="@+id/payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+
+            style="@style/RoundButton"
+            android:text="결제하기" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

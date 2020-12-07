@@ -26,7 +26,9 @@ import com.designthinking.quokka.event.messages.OnLocationUpdate;
 import com.designthinking.quokka.event.messages.OnSpeedUpdate;
 import com.designthinking.quokka.event.messages.OnStartDriving;
 import com.designthinking.quokka.event.messages.OnStopDriving;
+import com.designthinking.quokka.map.QuokkaMap;
 import com.designthinking.quokka.retrofit.RetrofitClient;
+import com.designthinking.quokka.util.LocationUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +41,8 @@ public class DrivingFragment extends Fragment implements IEventListener {
 
     private Handler handler;
 
+    private QuokkaMap quokkaMap;
+
     private RetrofitClient client;
 
     private ViewGroup root;
@@ -49,7 +53,8 @@ public class DrivingFragment extends Fragment implements IEventListener {
     private TextView chargeText;
     private Button stopBtn;
     private ViewGroup warnBg;
-    private ImageView warnSign;
+    private ImageView childSign;
+    private ImageView speedLimitSign;
     private SeekBar speedBar;
     private TextView speedText;
 
@@ -89,18 +94,21 @@ public class DrivingFragment extends Fragment implements IEventListener {
         warnUpdateRunnable = () -> {
             if(drive.shouldWarn()){
                 warnBg.setVisibility(warnTick % 2 == 0 ? View.VISIBLE : View.GONE);
-                warnSign.setVisibility(View.VISIBLE);
+                speedLimitSign.setVisibility(View.VISIBLE);
                 switch (drive.getWarnType()){
                     case MAX_SPEED:
-                        warnSign.setImageResource(R.drawable.speed_limit_25);
+                        speedLimitSign.setImageResource(R.drawable.speed_limit_25);
+                        break;
+                    case AREA:
+                        speedLimitSign.setImageResource(R.drawable.speed_limit_15);
                         break;
                     default:
-                        warnSign.setVisibility(View.GONE);
+                        speedLimitSign.setVisibility(View.GONE);
                 }
             }
             else{
                 warnBg.setVisibility(View.GONE);
-                warnSign.setVisibility(View.GONE);
+                speedLimitSign.setVisibility(View.GONE);
             }
             warnTick++;
 
@@ -121,7 +129,8 @@ public class DrivingFragment extends Fragment implements IEventListener {
         chargeText = view.findViewById(R.id.charge);
         stopBtn = view.findViewById(R.id.stop);
         warnBg = view.findViewById(R.id.warn_bg);
-        warnSign = view.findViewById(R.id.warn_sign);
+        childSign = view.findViewById(R.id.child_sign);
+        speedLimitSign = view.findViewById(R.id.speed_limit_sign);
         speedBar = view.findViewById(R.id.speed);
         speedText = view.findViewById(R.id.speed_text);
 
@@ -171,6 +180,10 @@ public class DrivingFragment extends Fragment implements IEventListener {
         this.client = client;
     }
 
+    public void setQuokkaMap(QuokkaMap quokkaMap){
+        this.quokkaMap = quokkaMap;
+    }
+
     public void stopDrive(){
         if(drive == null) return;
     }
@@ -205,6 +218,8 @@ public class DrivingFragment extends Fragment implements IEventListener {
         handler.removeCallbacks(warnUpdateRunnable);
 
         warnBg.setVisibility(View.GONE);
+        childSign.setVisibility(View.GONE);
+        speedLimitSign.setVisibility(View.GONE);
     }
 
     public void onLocationUpdate(OnLocationUpdate event){
@@ -254,6 +269,11 @@ public class DrivingFragment extends Fragment implements IEventListener {
 
             }
         });
+
+        if(quokkaMap.isInSafeZone(LocationUtil.toLatLng(location)))
+            childSign.setVisibility(View.VISIBLE);
+        else
+            childSign.setVisibility(View.GONE);
 
         lastLocationUpdateTimestamp = System.currentTimeMillis();
     }

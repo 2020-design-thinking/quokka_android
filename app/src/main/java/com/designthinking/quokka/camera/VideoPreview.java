@@ -43,9 +43,9 @@ public class VideoPreview extends ImageProvider implements SurfaceHolder.Callbac
             @Override
             public void run() {
                 request();
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, 1000);
             }
-        }, 5000);
+        }, 1000);
     }
 
     @Override

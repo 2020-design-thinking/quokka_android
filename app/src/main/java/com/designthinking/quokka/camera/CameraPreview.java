@@ -46,9 +46,9 @@ public class CameraPreview extends ImageProvider implements SurfaceHolder.Callba
             @Override
             public void run() {
                 request();
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, 1000);
             }
-        }, 5000);
+        }, 1000);
     }
 
     @Override

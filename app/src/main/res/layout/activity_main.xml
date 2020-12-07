@@ -7,12 +7,34 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/map_bound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="200dp"
+        android:layout_marginTop="80dp">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map"
         tools:context=".MainActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <fragment
+        android:id="@+id/driving_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:name="com.designthinking.quokka.DrivingFragment" />
 
     <fragment
         android:id="@+id/destination_fragment"
@@ -27,13 +49,6 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity"
         android:name="com.designthinking.quokka.QuokkaFragment" />
-
-    <fragment
-        android:id="@+id/driving_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:name="com.designthinking.quokka.DrivingFragment" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/image_provider_root"

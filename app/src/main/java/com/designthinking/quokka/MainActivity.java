@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -14,6 +15,7 @@ import retrofit2.Response;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.location.Location;
@@ -29,18 +31,23 @@ import android.widget.Toast;
 
 import com.designthinking.quokka.api.Device;
 import com.designthinking.quokka.api.Drive;
+import com.designthinking.quokka.api.SafeZone;
+import com.designthinking.quokka.api.Station;
 import com.designthinking.quokka.camera.IImageListener;
 import com.designthinking.quokka.camera.ImageProvider;
 import com.designthinking.quokka.camera.VideoPreview;
 import com.designthinking.quokka.event.EventManager;
 import com.designthinking.quokka.event.IEventListener;
 import com.designthinking.quokka.event.messages.OnLocationUpdate;
+import com.designthinking.quokka.event.messages.OnSafeZoneUpdate;
 import com.designthinking.quokka.event.messages.OnSpeedUpdate;
 import com.designthinking.quokka.event.messages.OnStartDriving;
+import com.designthinking.quokka.event.messages.OnStationUpdate;
 import com.designthinking.quokka.event.messages.OnStopDriving;
 import com.designthinking.quokka.location.FakeLocationProvider;
 import com.designthinking.quokka.location.LocationProvider;
 import com.designthinking.quokka.location.LocationPermission;
+import com.designthinking.quokka.map.QuokkaMap;
 import com.designthinking.quokka.place.Place;
 import com.designthinking.quokka.reserve.Reserve;
 import com.designthinking.quokka.retrofit.RetrofitClient;
@@ -49,6 +56,7 @@ import com.designthinking.quokka.route.RouteCalculator;
 import com.designthinking.quokka.util.LocationUtil;
 import com.designthinking.quokka.view.DeviceDetailView;
 import com.designthinking.quokka.view.QuokkaMarker;
+import com.designthinking.quokka.view.StationMarker;
 import com.designthinking.quokka.view.ViewBitmap;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,6 +64,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.JointType;
@@ -111,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Marker destinationMarker;
     private List<Polyline> polylines = new ArrayList<>();
+    private List<Circle> circles = new ArrayList<>();
+    private List<Marker> stationMarkers = new ArrayList<>();
+
+    private QuokkaMap quokkaMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +144,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         drivingFragment = (DrivingFragment) getSupportFragmentManager().findFragmentById(R.id.driving_fragment);
         
         client = new RetrofitClient(this);
+        quokkaMap = new QuokkaMap(client);
 
         quokkaFragment.setClient(client);
         drivingFragment.setClient(client);
+        drivingFragment.setQuokkaMap(quokkaMap);
 
         handler = new Handler();
         handler.post(new Runnable() {
@@ -308,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
         }
 
-        if(camUpdate) map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 300));
+        if(camUpdate) map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100));
     }
 
     private void showRecommandedRoute(){
@@ -340,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(marker.getAlpha() == 0f) return false;
             if(quokkaFragment.isReserved()) return true;
 
+            if(marker.getTitle() == null) return false;
             Device device = getDevice(Integer.parseInt(marker.getTitle()));
             if(device == null) return false;
 
@@ -363,6 +380,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         else{
             enableMyLocationOnMap();
         }
+
+        map.setPadding(dpToPx(10), dpToPx(80), dpToPx(10), dpToPx(200)); // l, t, r, b
     }
 
     @Override
@@ -585,5 +604,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void onSpeedUpdate(OnSpeedUpdate event){
         locationProvider.setSpeed(event.speed);
+    }
+
+    public void onSafeZoneUpdate(OnSafeZoneUpdate event){
+        for(Circle circle : circles)
+            circle.remove();
+
+        for(SafeZone safeZone : event.safeZones){
+            CircleOptions circleOptions = new CircleOptions();
+            circleOptions.center(safeZone.getLatLng());
+            circleOptions.radius(safeZone.getRadius() * 1000);
+            circleOptions.strokeColor(ContextCompat.getColor(this, R.color.colorWarn));
+            circleOptions.fillColor(ContextCompat.getColor(this, R.color.colorWarnFill));
+            circleOptions.strokeWidth(5);
+            circles.add(map.addCircle(circleOptions));
+        }
+    }
+
+    public void onStationUpdate(OnStationUpdate event){
+        for(Marker marker : stationMarkers)
+            marker.remove();
+
+        for(Station station : event.stations){
+            MarkerOptions options = new MarkerOptions();
+            options.position(station.getLatLng());
+            options.icon(BitmapDescriptorFactory.fromBitmap((new ViewBitmap(new StationMarker(this), this)).getBitmap()));
+            stationMarkers.add(map.addMarker(options));
+        }
+    }
+
+    public static int dpToPx(int dp) {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 }

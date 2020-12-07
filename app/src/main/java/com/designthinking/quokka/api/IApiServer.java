@@ -61,4 +61,10 @@ public interface IApiServer {
     @POST("/judge/image")
     Call<Void> postImage(@Part MultipartBody.Part image);
 
+    @GET("map/safe_zone")
+    Call<List<SafeZone>> safeZoneList();
+
+    @GET("map/station")
+    Call<List<Station>> stationList();
+
 }

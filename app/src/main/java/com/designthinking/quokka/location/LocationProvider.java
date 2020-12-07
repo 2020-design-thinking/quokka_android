@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.designthinking.quokka.event.EventManager;
 import com.designthinking.quokka.event.messages.OnLocationUpdate;
+import com.designthinking.quokka.map.QuokkaMap;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.model.LatLng;
 
