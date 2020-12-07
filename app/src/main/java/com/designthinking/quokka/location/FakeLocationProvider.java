@@ -2,6 +2,7 @@ package com.designthinking.quokka.location;
 
 import android.location.Location;
 import android.os.Handler;
+import android.util.Log;
 
 import com.designthinking.quokka.event.EventManager;
 import com.designthinking.quokka.event.messages.OnLocationUpdate;

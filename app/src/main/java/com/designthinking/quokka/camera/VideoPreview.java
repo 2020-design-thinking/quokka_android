@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.PixelCopy;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -20,6 +21,7 @@ import java.io.IOException;
 public class VideoPreview extends ImageProvider implements SurfaceHolder.Callback {
 
     private Context context;
+    private Handler handler;
     private SurfaceHolder holder;
 
     private Camera camera;
@@ -31,26 +33,31 @@ public class VideoPreview extends ImageProvider implements SurfaceHolder.Callbac
     private boolean captureFlag = false;
     private boolean stop = false;
 
+    private Runnable captureRunnable;
+
     public VideoPreview(Context context, Handler handler){
         super(context);
         this.context = context;
+        this.handler = handler;
 
         holder = getHolder();
         holder.addCallback(this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                request();
-                handler.postDelayed(this, 1000);
-            }
-        }, 1000);
+        captureRunnable = () -> {
+            request();
+            handler.postDelayed(captureRunnable, 1000);
+        };
+
+        handler.post(captureRunnable);
     }
 
     @Override
     public void request(){
         if(stop) return;
+
+        Log.i("VIDEOPREV", getWidth() + " x " + getHeight());
+        if(getWidth() == 0 || getHeight() == 0) return;
 
         final Bitmap[] bitmap = {Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888)};
 
@@ -82,6 +89,8 @@ public class VideoPreview extends ImageProvider implements SurfaceHolder.Callbac
     public void stop(){
         mediaPlayer.stop();
         mediaPlayer.release();
+
+        handler.removeCallbacks(captureRunnable);
 
         stop = true;
     }

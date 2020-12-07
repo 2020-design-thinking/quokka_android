@@ -30,6 +30,10 @@ public class EventManager {
         listeners.remove(listener);
     }
 
+    public void removeAllListeners(){
+        listeners.clear();
+    }
+
     public void invoke(Event message){
         for (IEventListener listener : listeners){
             for(Method method : listener.getClass().getMethods()){

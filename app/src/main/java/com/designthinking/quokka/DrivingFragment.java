@@ -1,6 +1,7 @@
 package com.designthinking.quokka;
 
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -66,6 +67,8 @@ public class DrivingFragment extends Fragment implements IEventListener {
 
     private long lastLocationUpdateTimestamp;
 
+    private MediaPlayer mp;
+
     public DrivingFragment() {
         // Required empty public constructor
     }
@@ -105,6 +108,11 @@ public class DrivingFragment extends Fragment implements IEventListener {
                     default:
                         speedLimitSign.setVisibility(View.GONE);
                 }
+
+                if(warnTick % 2 == 0){
+                    mp.seekTo(0);
+                    mp.start();
+                }
             }
             else{
                 warnBg.setVisibility(View.GONE);
@@ -114,6 +122,8 @@ public class DrivingFragment extends Fragment implements IEventListener {
 
             handler.postDelayed(warnUpdateRunnable, 750);
         };
+
+        mp = MediaPlayer.create(getContext(), R.raw.alert);
     }
 
     @Override
@@ -137,10 +147,12 @@ public class DrivingFragment extends Fragment implements IEventListener {
         root.setVisibility(View.GONE);
 
         stopBtn.setOnClickListener(v -> {
+            if(drive == null) return;
             client.getApi().finishDriving(drive.pk).enqueue(new Callback<Drive>() {
                 @Override
                 public void onResponse(Call<Drive> call, Response<Drive> response) {
                     if(response.code() == 200){
+                        if(drive == null) return;
                         drive.set(response.body());
                         EventManager.getInstance().invoke(new OnStopDriving(drive));
                     }

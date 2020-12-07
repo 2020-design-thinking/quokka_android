@@ -93,6 +93,17 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginRight="5dp"
+
+                            android:text="목적지까지"
+                            android:fontFamily="@font/nanum_barun_gothic_b"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorForegroundLight"/>
+
+                        <TextView
                             android:id="@+id/time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -214,7 +225,20 @@
 
         </LinearLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/qr_scan"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="12dp"
+        style="@style/MoreRoundButton"
+        android:src="@drawable/qr_code"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/root"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:elevation="5dp"
+        android:clickable="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

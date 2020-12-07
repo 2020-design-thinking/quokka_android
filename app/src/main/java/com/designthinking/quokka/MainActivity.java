@@ -21,6 +21,7 @@ import android.graphics.Rect;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int REQUEST_START_DRIVING = 101;
 
     private GoogleMap map;
+    private boolean mapInitPos = false;
 
     private RetrofitClient client;
 
@@ -128,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("MAIN", "Create");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -175,29 +179,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        /*qrScan = findViewById(R.id.qr_scan);
-        qrScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
-                integrator.setCaptureActivity(QrReaderActivity.class);
-
-                integrator.setOrientationLocked(true);
-                integrator.setBeepEnabled(false);
-                integrator.setPrompt("");
-
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-
-                integrator.initiateScan();
-            }
-        });*/
-
         deviceDetailView = new DeviceDetailView(this, defaultLayout);
 
         //drivingManager = new DrivingManager(client.getApi());
         //drivingView = new DrivingView(this, rootLayout, drivingManager, null);
 
         locationProvider = new FakeLocationProvider(LocationUtil.getRandomLatLng(), handler);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("MAIN", "Destroy");
+        handler.removeCallbacksAndMessages(null);
+        EventManager.getInstance().removeAllListeners();
     }
 
     public void updateDevices(List<Device> devices){
@@ -231,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void updateMarkerAlpha(){
         for(Device device : devices){
-            if(drivingFragment.isDriving())
+            if(drivingFragment.isDriving() || !device.isAvailable())
                 device.marker.setAlpha(0f);
             else if(quokkaFragment.getRoute() == null
                     || quokkaFragment.getRoute().device == device)
@@ -313,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             quokkaFragment.getReserve().device.getLocation())).build();
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
         }
-        else if(drivingFragment.isDriving()){
+        else if(drivingFragment.isDriving() && route.target != null){
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(LocationUtil.toLatLng(locationProvider.getLastLocation()))
                     .zoom(17)
@@ -324,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
         }
 
-        if(camUpdate) map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100));
+        if(camUpdate) map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 300));
     }
 
     private void showRecommandedRoute(){
@@ -550,6 +545,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationProvider.setSpeed(0);
 
         destinationFragment.setRouteTypeVisibility(false);
+
+        updateMarkerAlpha();
     }
 
     public void onStopDriving(OnStopDriving event){
@@ -557,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationProvider.deactivate();
 
         imageProvider.stop();
-        rootLayout.removeView(imageProvider);
+        imageProviderContainer.removeView(imageProvider);
 
         Drive drive = event.drive;
         Intent intent = new Intent(this, FinishDrivingActivity.class);
@@ -589,6 +586,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         /*map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(lastLocation.getLatitude(),
                         lastLocation.getLongitude()), 16f));*/
+
+        if(!mapInitPos){
+            map.moveCamera(CameraUpdateFactory.newLatLng(LocationUtil.toLatLng(lastLocation)));
+            mapInitPos = true;
+        }
 
         if(quokkaFragment.getRoute() == null && devices != null)
             showRecommandedRoute();
