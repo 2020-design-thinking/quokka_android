@@ -3,6 +3,7 @@ package com.designthinking.quokka.util;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.Random;
 
@@ -27,10 +28,6 @@ public class LocationUtil {
         t = Math.max(Math.min(t, 1), 0);
         return new LatLng(la.latitude + (lb.latitude - la.latitude) * t,
                 la.longitude + (lb.longitude - la.longitude) * t);
-    }
-
-    public static double degree(LatLng la, LatLng lb){
-        return Math.atan2(lb.longitude - la.longitude, lb.latitude - la.latitude) * (180 / Math.PI);
     }
 
     public static LatLng getRandomLatLng(){

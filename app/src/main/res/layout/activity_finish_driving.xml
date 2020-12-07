@@ -50,7 +50,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="15dp"
-                android:elevation="5dp"
+                android:elevation="3dp"
                 android:orientation="vertical"
 
                 android:background="@drawable/bg_floating_rounded">
@@ -61,17 +61,17 @@
                     android:layout_gravity="left"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="10dp"
 
                     android:text="거리"
                     android:textColor="@color/colorForeground"
                     android:textSize="25dp" />
 
                 <fragment
+                    android:id="@+id/map"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:id="@+id/map"
-                    tools:context=".MainActivity"
+                    tools:context=".FinishDrivingActivity"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
@@ -152,7 +152,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/bg_floating_rounded"
-                android:elevation="5dp"
+                android:elevation="3dp"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -163,26 +163,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:layout_margin="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
 
                     android:text="안전"
                     android:textColor="@color/colorForeground"
                     android:textSize="25dp" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                    android:text="4.3/5"
-                    android:textSize="50dp"
-                    android:textColor="@color/colorForeground"/>
+                    <TextView
+                        android:id="@+id/rating_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="4.3"
+                        android:textSize="50dp"
+                        android:textColor="@color/colorForeground"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginBottom="4dp"
+
+                        android:text="/5"
+                        android:textColor="@color/colorForeground"
+                        android:textSize="25dp" />
+
+                </LinearLayout>
 
                 <RatingBar
                     android:id="@+id/rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="15dp"/>
 
             </LinearLayout>
 
@@ -191,9 +214,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="80dp"
                 android:background="@drawable/bg_floating_rounded"
-                android:elevation="5dp"
+                android:elevation="3dp"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -318,7 +341,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_margin="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -506,7 +531,7 @@
         android:id="@+id/payment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
 
         style="@style/RoundButton"

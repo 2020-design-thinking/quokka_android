@@ -19,9 +19,9 @@ import android.graphics.Rect;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -35,6 +35,7 @@ import com.designthinking.quokka.camera.VideoPreview;
 import com.designthinking.quokka.event.EventManager;
 import com.designthinking.quokka.event.IEventListener;
 import com.designthinking.quokka.event.messages.OnLocationUpdate;
+import com.designthinking.quokka.event.messages.OnSpeedUpdate;
 import com.designthinking.quokka.event.messages.OnStartDriving;
 import com.designthinking.quokka.event.messages.OnStopDriving;
 import com.designthinking.quokka.location.FakeLocationProvider;
@@ -65,6 +66,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
+import com.google.maps.android.SphericalUtil;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -72,7 +74,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
         IImageListener, DestinationFragment.RouteTypeChangeListener, DestinationFragment.DestinationChangeListener,
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Handler handler;
 
     private ConstraintLayout rootLayout;
+    private ViewGroup imageProviderContainer;
     private RelativeLayout defaultLayout;
     private Button qrScan;
 
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         rootLayout = findViewById(R.id.root);
         defaultLayout = findViewById(R.id.default_layout);
+        imageProviderContainer = findViewById(R.id.image_provider_root);
         quokkaFragment = (QuokkaFragment) getSupportFragmentManager().findFragmentById(R.id.quokka_fragment);
         quokkaFragment.setListener(this);
         destinationFragment = (DestinationFragment) getSupportFragmentManager().findFragmentById(R.id.destination_fragment);
@@ -238,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setRoute(Route route){
         if(route == null) return;
+        if(drivingFragment.isDriving()) return;
 
         quokkaFragment.setRoute(route);
 
@@ -288,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .target(LocationUtil.toLatLng(locationProvider.getLastLocation()))
                     .zoom(17)
                     .tilt(30)
-                    .bearing((float)LocationUtil.degree(
+                    .bearing((float)SphericalUtil.computeHeading(
                             LocationUtil.toLatLng(locationProvider.getLastLocation()),
                             quokkaFragment.getReserve().device.getLocation())).build();
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
@@ -298,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .target(LocationUtil.toLatLng(locationProvider.getLastLocation()))
                     .zoom(17)
                     .tilt(30)
-                    .bearing((float)LocationUtil.degree(
+                    .bearing((float)SphericalUtil.computeHeading(
                             LocationUtil.toLatLng(locationProvider.getLastLocation()),
                             route.target)).build();
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
@@ -487,7 +491,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onChanged(Place place) {
-        if(quokkaFragment.isReserved()){
+        if(quokkaFragment.isReserved() || drivingFragment.isDriving()){
             destinationFragment.setState(DestinationFragment.State.NONE);
             quokkaFragment.getRoute().target = place.location;
         }
@@ -499,11 +503,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onReserved(Reserve reserve) {
         drawRoute(quokkaFragment.getRoute(), true);
-        destinationFragment.setRouteTypeVisibility(reserve == null);
+        destinationFragment.setRouteTypeVisibility(reserve == null && !drivingFragment.isDriving());
 
         if(reserve != null){
             locationProvider.setTargetLatLng(reserve.device.getLocation());
-            locationProvider.setSpeed(10); // 1.4
+            locationProvider.setSpeed(30);
         }
         else{
             locationProvider.setTargetLatLng(null);
@@ -518,13 +522,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         imageProvider = new VideoPreview(MainActivity.this, handler);
         imageProvider.setListener(MainActivity.this);
 
-        rootLayout.addView(imageProvider);
+        imageProviderContainer.addView(imageProvider);
 
         if(quokkaFragment.getRoute().target == null){
             quokkaFragment.getRoute().target = LocationUtil.getRandomLatLng();
         }
         locationProvider.setTargetLatLng(quokkaFragment.getRoute().target);
-        locationProvider.setSpeed(40);
+        locationProvider.setSpeed(0);
+
+        destinationFragment.setRouteTypeVisibility(false);
     }
 
     public void onStopDriving(OnStopDriving event){
@@ -536,15 +542,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Drive drive = event.drive;
         Intent intent = new Intent(this, FinishDrivingActivity.class);
+        intent.putExtra("latlngs", new double[]{
+                drive.getRoute().getDriveStartLatLng().latitude,
+                drive.getRoute().getDriveStartLatLng().longitude,
+                drive.getRoute().device.getLocation().latitude,
+                drive.getRoute().device.getLocation().longitude
+        });
+        intent.putExtra("time", drive.getSeconds() / 60);
         intent.putExtra("dist", drive.dist);
-        intent.putExtra("driving_charge", drive.driving_charge);
-        intent.putExtra("discounted_charge", drive.discounted_charge);
-        intent.putExtra("charge", drive.charge);
         intent.putExtra("rating", drive.safety_rate);
+        intent.putExtra("driving_charge", drive.driving_charge);
+        intent.putExtra("charge_discount", drive.charge_discount);
+        intent.putExtra("safety_discount", drive.safety_discount);
+        intent.putExtra("charge", drive.charge);
+
         startActivity(intent);
 
         locationProvider.setTargetLatLng(null);
         locationProvider.setSpeed(0);
+
+        destinationFragment.setRouteTypeVisibility(true);
     }
 
     public void onLocationUpdate(OnLocationUpdate event){
@@ -564,5 +581,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             drivingFragment.getDevice().setLocation(LocationUtil.toLatLng(event.location));
 
         drawRoute(quokkaFragment.getRoute(), false);
+    }
+
+    public void onSpeedUpdate(OnSpeedUpdate event){
+        locationProvider.setSpeed(event.speed);
     }
 }

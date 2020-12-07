@@ -233,6 +233,8 @@ public class QuokkaFragment extends Fragment implements IEventListener {
                     Drive drive = response.body();
                     if(drive == null) return;
 
+                    route.setDriveStartLatLng(device.getLocation());
+
                     drive.setRoute(route);
                     drive.start();
 

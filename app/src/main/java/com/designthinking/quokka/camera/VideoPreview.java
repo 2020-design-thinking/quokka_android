@@ -93,8 +93,8 @@ public class VideoPreview extends ImageProvider implements SurfaceHolder.Callbac
         mediaPlayer.setLooping(true);
 
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        layoutParams.width = mediaPlayer.getVideoWidth() / 4;
-        layoutParams.height = mediaPlayer.getVideoHeight() / 4;
+        layoutParams.width = mediaPlayer.getVideoWidth() / 6;
+        layoutParams.height = mediaPlayer.getVideoHeight() / 6;
         setLayoutParams(layoutParams);
 
         mediaPlayer.start();

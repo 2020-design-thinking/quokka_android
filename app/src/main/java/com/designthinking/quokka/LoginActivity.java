@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         gotoRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void result(Result code) {
                         switch (code){
                             case SUCCESS:
-                                Intent intent = new Intent(LoginActivity.this, RequestDestinationActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 break;
                             case FAIL:

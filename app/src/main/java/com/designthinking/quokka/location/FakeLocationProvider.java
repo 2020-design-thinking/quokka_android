@@ -18,7 +18,7 @@ public class FakeLocationProvider extends LocationProvider {
     private Runnable locationUpdate;
 
     private LatLng targetLatLng;
-    private double speed; // m/s
+    private double speed; // km/h
 
     public FakeLocationProvider(LatLng init, Handler handler){
         current = init;
@@ -44,7 +44,7 @@ public class FakeLocationProvider extends LocationProvider {
         if(targetLatLng == null) return;
 
         // Binary search to calculate next position with given speed
-        double step = speed * UPDATE_PERIOD / 1000.0;
+        double step = (speed / 3.6) * UPDATE_PERIOD / 1000.0;
         double lo = 0, hi = 1;
         for(int i = 0; i < 30; i++){
             double mid = (lo + hi) / 2;
@@ -67,5 +67,10 @@ public class FakeLocationProvider extends LocationProvider {
     @Override
     public void setSpeed(double speed){
         this.speed = speed;
+    }
+
+    @Override
+    public double getSpeed(){
+        return speed;
     }
 }

@@ -12,6 +12,8 @@ public class Route {
     public LatLng target;
     public Device device;
 
+    private LatLng driveStartLatLng;
+
     /*public Route(LocationProvider locationProvider, LatLng target){
         this.locationProvider = locationProvider;
         this.target = target;
@@ -30,6 +32,14 @@ public class Route {
 
     public LatLng getCurrentLocation(){
         return LocationUtil.toLatLng(locationProvider.getLastLocation());
+    }
+
+    public void setDriveStartLatLng(LatLng driveStartLatLng){
+        this.driveStartLatLng = driveStartLatLng;
+    }
+
+    public LatLng getDriveStartLatLng(){
+        return driveStartLatLng;
     }
 
     // METERS

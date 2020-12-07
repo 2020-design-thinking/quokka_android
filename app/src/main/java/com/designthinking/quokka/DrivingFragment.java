@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.designthinking.quokka.api.Device;
@@ -21,6 +23,7 @@ import com.designthinking.quokka.event.EventManager;
 import com.designthinking.quokka.event.IEventListener;
 import com.designthinking.quokka.event.messages.OnDrivingInfoUpdate;
 import com.designthinking.quokka.event.messages.OnLocationUpdate;
+import com.designthinking.quokka.event.messages.OnSpeedUpdate;
 import com.designthinking.quokka.event.messages.OnStartDriving;
 import com.designthinking.quokka.event.messages.OnStopDriving;
 import com.designthinking.quokka.retrofit.RetrofitClient;
@@ -45,10 +48,16 @@ public class DrivingFragment extends Fragment implements IEventListener {
     private TextView timeLeftText;
     private TextView chargeText;
     private Button stopBtn;
+    private ViewGroup warnBg;
+    private ImageView warnSign;
+    private SeekBar speedBar;
+    private TextView speedText;
 
     private Drive drive;
 
     private Runnable textUpdateRunnable;
+    private Runnable warnUpdateRunnable;
+    private int warnTick;
 
     private long lastLocationUpdateTimestamp;
 
@@ -76,6 +85,27 @@ public class DrivingFragment extends Fragment implements IEventListener {
 
             handler.postDelayed(textUpdateRunnable, 1000);
         };
+
+        warnUpdateRunnable = () -> {
+            if(drive.shouldWarn()){
+                warnBg.setVisibility(warnTick % 2 == 0 ? View.VISIBLE : View.GONE);
+                warnSign.setVisibility(View.VISIBLE);
+                switch (drive.getWarnType()){
+                    case MAX_SPEED:
+                        warnSign.setImageResource(R.drawable.speed_limit_25);
+                        break;
+                    default:
+                        warnSign.setVisibility(View.GONE);
+                }
+            }
+            else{
+                warnBg.setVisibility(View.GONE);
+                warnSign.setVisibility(View.GONE);
+            }
+            warnTick++;
+
+            handler.postDelayed(warnUpdateRunnable, 750);
+        };
     }
 
     @Override
@@ -90,6 +120,10 @@ public class DrivingFragment extends Fragment implements IEventListener {
         timeLeftText = view.findViewById(R.id.time_left);
         chargeText = view.findViewById(R.id.charge);
         stopBtn = view.findViewById(R.id.stop);
+        warnBg = view.findViewById(R.id.warn_bg);
+        warnSign = view.findViewById(R.id.warn_sign);
+        speedBar = view.findViewById(R.id.speed);
+        speedText = view.findViewById(R.id.speed_text);
 
         root.setVisibility(View.GONE);
 
@@ -98,6 +132,7 @@ public class DrivingFragment extends Fragment implements IEventListener {
                 @Override
                 public void onResponse(Call<Drive> call, Response<Drive> response) {
                     if(response.code() == 200){
+                        drive.set(response.body());
                         EventManager.getInstance().invoke(new OnStopDriving(drive));
                     }
                 }
@@ -107,6 +142,26 @@ public class DrivingFragment extends Fragment implements IEventListener {
 
                 }
             });
+        });
+
+        speedBar.setMax(99);
+        speedBar.setProgress(0);
+        speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                speedText.setText(progress + "km/h");
+                EventManager.getInstance().invoke(new OnSpeedUpdate(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
         });
 
         return view;
@@ -138,6 +193,7 @@ public class DrivingFragment extends Fragment implements IEventListener {
         root.setVisibility(View.VISIBLE);
 
         handler.post(textUpdateRunnable);
+        handler.post(warnUpdateRunnable);
     }
 
     public void onStopDriving(OnStopDriving event){
@@ -146,6 +202,9 @@ public class DrivingFragment extends Fragment implements IEventListener {
         root.setVisibility(View.GONE);
 
         handler.removeCallbacks(textUpdateRunnable);
+        handler.removeCallbacks(warnUpdateRunnable);
+
+        warnBg.setVisibility(View.GONE);
     }
 
     public void onLocationUpdate(OnLocationUpdate event){

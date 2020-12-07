@@ -22,6 +22,7 @@ public class LocationProvider implements LocationSource {
 
     protected void setLocation(Location location){
         this.location = location;
+        location.setSpeed((float)getSpeed());
         for(OnLocationChangedListener listener : listeners){
             listener.onLocationChanged(location);
         }
@@ -53,5 +54,9 @@ public class LocationProvider implements LocationSource {
     // m/s
     public void setSpeed(double speed){
 
+    }
+
+    public double getSpeed(){
+        return 0;
     }
 }

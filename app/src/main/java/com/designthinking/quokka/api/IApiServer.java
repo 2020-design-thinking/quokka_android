@@ -27,7 +27,7 @@ public interface IApiServer {
 
     @FormUrlEncoded
     @POST("users/register")
-    Call<Void> register(@Field("username") String username, @Field("email") String email,
+    Call<MessageResponse> register(@Field("username") String username, @Field("email") String email,
                         @Field("password") String password, @Field("first_name") String first_name,
                         @Field("last_name") String last_name, @Field("birth") String birth);
 
