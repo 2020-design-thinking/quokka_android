@@ -90,4 +90,13 @@ public class Route {
     public boolean hasDestination(){
         return target != null;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Route)) return false;
+        Route ro = (Route) o;
+        if(device != ro.device) return false;
+        if(target == ro.target) return true;
+        return target != null && target.equals(ro.target);
+    }
 }

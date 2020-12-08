@@ -70,7 +70,7 @@ public class VideoPreview extends ImageProvider implements SurfaceHolder.Callbac
                     imageFile.createNewFile();
 
                     fileStream = new FileOutputStream(imageFile);
-                    bitmap[0].compress(Bitmap.CompressFormat.JPEG, 80, fileStream);
+                    bitmap[0].compress(Bitmap.CompressFormat.JPEG, 70, fileStream);
                     fileStream.flush();
                     fileStream.close();
 
@@ -102,8 +102,8 @@ public class VideoPreview extends ImageProvider implements SurfaceHolder.Callbac
         mediaPlayer.setLooping(true);
 
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        layoutParams.width = mediaPlayer.getVideoWidth() / 6;
-        layoutParams.height = mediaPlayer.getVideoHeight() / 6;
+        layoutParams.width = mediaPlayer.getVideoWidth() / 8;
+        layoutParams.height = mediaPlayer.getVideoHeight() / 8;
         setLayoutParams(layoutParams);
 
         mediaPlayer.start();

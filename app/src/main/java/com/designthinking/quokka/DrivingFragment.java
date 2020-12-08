@@ -23,7 +23,10 @@ import com.designthinking.quokka.api.Drive;
 import com.designthinking.quokka.event.EventManager;
 import com.designthinking.quokka.event.IEventListener;
 import com.designthinking.quokka.event.messages.OnDrivingInfoUpdate;
+import com.designthinking.quokka.event.messages.OnLoadingFinish;
+import com.designthinking.quokka.event.messages.OnLoadingStart;
 import com.designthinking.quokka.event.messages.OnLocationUpdate;
+import com.designthinking.quokka.event.messages.OnPreStopDriving;
 import com.designthinking.quokka.event.messages.OnSpeedUpdate;
 import com.designthinking.quokka.event.messages.OnStartDriving;
 import com.designthinking.quokka.event.messages.OnStopDriving;
@@ -38,7 +41,7 @@ import com.designthinking.quokka.util.LocationUtil;
  */
 public class DrivingFragment extends Fragment implements IEventListener {
 
-    private static final long UPDATE_RATE = 1000; // 실제 서버에 위치가 업데이트되는 주기 (ms)
+    private static final long UPDATE_RATE = 1500; // 실제 서버에 위치가 업데이트되는 주기 (ms)
 
     private Handler handler;
 
@@ -69,6 +72,8 @@ public class DrivingFragment extends Fragment implements IEventListener {
 
     private MediaPlayer mp;
 
+    private boolean isSafeZone = false;
+
     public DrivingFragment() {
         // Required empty public constructor
     }
@@ -95,10 +100,21 @@ public class DrivingFragment extends Fragment implements IEventListener {
         };
 
         warnUpdateRunnable = () -> {
-            if(drive.shouldWarn()){
-                warnBg.setVisibility(warnTick % 2 == 0 ? View.VISIBLE : View.GONE);
+            if(drive.shouldPeopleWarn()){
+                childSign.setVisibility(View.VISIBLE);
+                childSign.setImageResource(R.drawable.warn_people);
+            }
+            else if(isSafeZone){
+                childSign.setVisibility(View.VISIBLE);
+                childSign.setImageResource(R.drawable.child);
+            }
+            else{
+                childSign.setVisibility(View.GONE);
+            }
+
+            if(drive.shouldSpeedWarn()){
                 speedLimitSign.setVisibility(View.VISIBLE);
-                switch (drive.getWarnType()){
+                switch (drive.getSpeedWarnType()){
                     case MAX_SPEED:
                         speedLimitSign.setImageResource(R.drawable.speed_limit_25);
                         break;
@@ -108,6 +124,13 @@ public class DrivingFragment extends Fragment implements IEventListener {
                     default:
                         speedLimitSign.setVisibility(View.GONE);
                 }
+            }
+            else{
+                speedLimitSign.setVisibility(View.GONE);
+            }
+
+            if(drive.shouldWarn()){
+                warnBg.setVisibility(warnTick % 2 == 0 ? View.VISIBLE : View.GONE);
 
                 if(warnTick % 2 == 0){
                     mp.seekTo(0);
@@ -116,7 +139,6 @@ public class DrivingFragment extends Fragment implements IEventListener {
             }
             else{
                 warnBg.setVisibility(View.GONE);
-                speedLimitSign.setVisibility(View.GONE);
             }
             warnTick++;
 
@@ -163,6 +185,10 @@ public class DrivingFragment extends Fragment implements IEventListener {
 
                 }
             });
+
+            EventManager.getInstance().invoke(new OnPreStopDriving());
+
+            EventManager.getInstance().invoke(new OnLoadingStart());
         });
 
         speedBar.setMax(99);
@@ -282,10 +308,7 @@ public class DrivingFragment extends Fragment implements IEventListener {
             }
         });
 
-        if(quokkaMap.isInSafeZone(LocationUtil.toLatLng(location)))
-            childSign.setVisibility(View.VISIBLE);
-        else
-            childSign.setVisibility(View.GONE);
+        isSafeZone = quokkaMap.isInSafeZone(LocationUtil.toLatLng(location));
 
         lastLocationUpdateTimestamp = System.currentTimeMillis();
     }

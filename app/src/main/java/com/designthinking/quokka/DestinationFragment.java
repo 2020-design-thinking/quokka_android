@@ -34,7 +34,7 @@ public class DestinationFragment extends Fragment {
 
     public enum State { FASTEST, CHEAPEST, NONE }
 
-    private State current;
+    private State current = State.NONE;
 
     private AutoCompleteTextView searchText;
     private ToggleButton fastestToggleBtn;
@@ -116,6 +116,10 @@ public class DestinationFragment extends Fragment {
         current = state;
 
         routeTypeChangeListener.onChanged(state);
+    }
+
+    public State getState(){
+        return current;
     }
 
     public Place getDestination(){

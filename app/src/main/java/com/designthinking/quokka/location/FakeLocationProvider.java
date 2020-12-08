@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class FakeLocationProvider extends LocationProvider {
 
-    private static final int UPDATE_PERIOD = 1000;
+    private static final int UPDATE_PERIOD = 1500;
 
     private LatLng current;
 

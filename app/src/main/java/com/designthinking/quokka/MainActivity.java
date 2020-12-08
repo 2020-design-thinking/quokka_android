@@ -39,7 +39,9 @@ import com.designthinking.quokka.camera.ImageProvider;
 import com.designthinking.quokka.camera.VideoPreview;
 import com.designthinking.quokka.event.EventManager;
 import com.designthinking.quokka.event.IEventListener;
+import com.designthinking.quokka.event.messages.OnLoadingFinish;
 import com.designthinking.quokka.event.messages.OnLocationUpdate;
+import com.designthinking.quokka.event.messages.OnPreStopDriving;
 import com.designthinking.quokka.event.messages.OnSafeZoneUpdate;
 import com.designthinking.quokka.event.messages.OnSpeedUpdate;
 import com.designthinking.quokka.event.messages.OnStartDriving;
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private QuokkaFragment quokkaFragment;
     private DestinationFragment destinationFragment;
     private DrivingFragment drivingFragment;
+    private LoadingFragment loadingFragment;
 
     private Marker destinationMarker;
     private List<Polyline> polylines = new ArrayList<>();
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         destinationFragment.setRouteTypeChangeListener(this);
         destinationFragment.setDestinationChangeListener(this);
         drivingFragment = (DrivingFragment) getSupportFragmentManager().findFragmentById(R.id.driving_fragment);
+        loadingFragment = (LoadingFragment) getSupportFragmentManager().findFragmentById(R.id.loading_fragment);
         
         client = new RetrofitClient(this);
         quokkaMap = new QuokkaMap(client);
@@ -220,8 +224,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         updateMarkerAlpha();
 
+        // 초기 루트
         if(quokkaFragment.getRoute() == null && lastLocation != null)
             showRecommandedRoute();
+        // 디바이스 업데이트에 따라 경로 재설정
+        else if(!quokkaFragment.isReserved() && !drivingFragment.isDriving()
+                && destinationFragment.getState() != DestinationFragment.State.NONE)
+            destinationFragment.setState(destinationFragment.getState());
+
     }
 
     public void updateMarkerAlpha(){
@@ -253,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void setRoute(Route route){
         if(route == null) return;
         if(drivingFragment.isDriving()) return;
+        if(quokkaFragment.getRoute() != null && quokkaFragment.getRoute().equals(route)) return;
 
         quokkaFragment.setRoute(route);
 
@@ -377,6 +388,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         map.setPadding(dpToPx(10), dpToPx(80), dpToPx(10), dpToPx(200)); // l, t, r, b
+
+        EventManager.getInstance().invoke(new OnLoadingFinish());
     }
 
     @Override
@@ -549,12 +562,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         updateMarkerAlpha();
     }
 
+    public void onPreStopDriving(OnPreStopDriving event){
+        imageProvider.stop();
+        imageProviderContainer.removeView(imageProvider);
+    }
+
     public void onStopDriving(OnStopDriving event){
         defaultLayout.setVisibility(View.VISIBLE);
         locationProvider.deactivate();
-
-        imageProvider.stop();
-        imageProviderContainer.removeView(imageProvider);
 
         Drive drive = event.drive;
         Intent intent = new Intent(this, FinishDrivingActivity.class);
@@ -588,7 +603,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         lastLocation.getLongitude()), 16f));*/
 
         if(!mapInitPos){
-            map.moveCamera(CameraUpdateFactory.newLatLng(LocationUtil.toLatLng(lastLocation)));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LocationUtil.toLatLng(lastLocation), 16f));
             mapInitPos = true;
         }
 

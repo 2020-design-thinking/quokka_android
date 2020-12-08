@@ -9,7 +9,7 @@ import java.time.Instant;
 
 public class Drive {
 
-    private static final long WARN_PERIOD = 5;
+    private static final long WARN_PERIOD = 2;
 
     public int pk;
 
@@ -20,8 +20,9 @@ public class Drive {
     public float safety_rate = 0;
     public String dist = "0";
 
-    public long last_warn_timestamp;
-    public int last_warn_type;
+    public long last_speed_warn_timestamp;
+    public int last_speed_warn_type;
+    public long last_people_warn_timestamp;
 
     private long timestamp;
     private Route route;
@@ -54,16 +55,25 @@ public class Drive {
         this.safety_rate = drive.safety_rate;
         this.dist = drive.dist;
 
-        this.last_warn_timestamp = drive.last_warn_timestamp;
-        this.last_warn_type = drive.last_warn_type;
+        this.last_speed_warn_timestamp = drive.last_speed_warn_timestamp;
+        this.last_speed_warn_type = drive.last_speed_warn_type;
+        this.last_people_warn_timestamp = drive.last_people_warn_timestamp;
+    }
+
+    public boolean shouldPeopleWarn(){
+        return (System.currentTimeMillis() / 1000L - last_people_warn_timestamp) <= WARN_PERIOD;
+    }
+
+    public boolean shouldSpeedWarn(){
+        return (System.currentTimeMillis() / 1000L - last_speed_warn_timestamp) <= WARN_PERIOD;
     }
 
     public boolean shouldWarn(){
-        return last_warn_type != -1 && (System.currentTimeMillis() / 1000L - last_warn_timestamp) <= WARN_PERIOD;
+        return shouldPeopleWarn() || shouldSpeedWarn();
     }
 
-    public Warn getWarnType(){
-        return Warn.values()[last_warn_type];
+    public Warn getSpeedWarnType(){
+        return Warn.values()[last_speed_warn_type];
     }
 
 }

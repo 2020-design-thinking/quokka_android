@@ -155,7 +155,7 @@ public class QuokkaFragment extends Fragment implements IEventListener {
             requestDrive(reserve.device);
         });
 
-        qrScanBtn.setOnClickListener(v -> {
+        /*qrScanBtn.setOnClickListener(v -> {
             IntentIntegrator integrator = new IntentIntegrator(getActivity());
             integrator.setCaptureActivity(QrReaderActivity.class);
 
@@ -166,7 +166,7 @@ public class QuokkaFragment extends Fragment implements IEventListener {
             integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
 
             integrator.initiateScan();
-        });
+        });*/
 
         return parent;
     }

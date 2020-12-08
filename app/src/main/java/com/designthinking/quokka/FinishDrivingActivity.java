@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -113,12 +115,16 @@ public class FinishDrivingActivity extends AppCompatActivity implements OnMapRea
         radarChart.setData(getRadarData());
 
         TextView drivingChargeText = findViewById(R.id.charge_origin); // 원 요금
+        ViewGroup chargeDiscountContainer = findViewById(R.id.charge_discount_container);
         TextView chargeDiscountText = findViewById(R.id.charge_discount); // 충전에 의한 감면
+        ViewGroup safetyDiscountContainer = findViewById(R.id.safety_discount_container);
         TextView safetyDiscountText = findViewById(R.id.safety_discount); // 안전 평점에 의한 감면
         TextView chargeText = findViewById(R.id.charge); // 최종 요금
 
         drivingChargeText.setText(getIntent().getIntExtra("driving_charge", 0) + "원");
+        if(getIntent().getIntExtra("charge_discount", 0) == 0) chargeDiscountContainer.setVisibility(View.GONE);
         chargeDiscountText.setText("-" + getIntent().getIntExtra("charge_discount", 0) + "원");
+        if(getIntent().getIntExtra("safety_discount", 0) == 0) safetyDiscountContainer.setVisibility(View.GONE);
         safetyDiscountText.setText("-" + getIntent().getIntExtra("safety_discount", 0) + "%");
         chargeText.setText(getIntent().getIntExtra("charge", 0) + "원");
 
